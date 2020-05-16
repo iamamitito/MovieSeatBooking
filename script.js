@@ -1,8 +1,10 @@
 const container = document.querySelector('.container');
+const allSeats = document.querySelectorAll('.row .seat');
 const seats = document.querySelectorAll('.row .seat:not(.occupied)');
 const count = document.getElementById('count');
 const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
+const bookingBtn = document.querySelector('.booking-btn');
 
 populateUI();
 
@@ -15,10 +17,15 @@ const setMovieData = (movieIndex, moviePrice) => {
 }
 
 const updateSelectedCountAndTotal = () => {
+    //Selected Seats
     const selectedSeats = document.querySelectorAll('.row .seat.selected');
     const seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
+    localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
 
-    localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex))
+    //Occupied Seats
+    const occupiedSeats = document.querySelectorAll('.row .seat.occupied');
+    const occupiedSeatsIndex = [...occupiedSeats].map(seat => [...allSeats].indexOf(seat));
+    localStorage.setItem('ocuppiedSeats', JSON.stringify(occupiedSeatsIndex));
 
     const selectedSeatsCount = selectedSeats.length;
 
@@ -28,6 +35,7 @@ const updateSelectedCountAndTotal = () => {
 
 function populateUI() {
     const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+    const occupiedSeats = JSON.parse(localStorage.getItem('ocuppiedSeats'));
 
     if (selectedSeats) {
         seats.forEach((seat, index) => {
@@ -36,6 +44,15 @@ function populateUI() {
             }
         });
     }
+    if (occupiedSeats) {
+        allSeats.forEach((seat, index) => {
+            if (occupiedSeats.indexOf(index) > -1) {
+                seat.className = ' seat occupied';
+            }
+        });
+
+    }
+
     const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
     if (selectedMovieIndex) {
         // When we change the index of the selected movie, the ticket price changes automatically.
@@ -55,6 +72,23 @@ container.addEventListener('click', e => {
         e.target.classList.toggle('selected');
         updateSelectedCountAndTotal();
     }
+});
+
+bookingBtn.addEventListener('click', () => {
+    const selectedSeats = document.querySelectorAll('.row .seat.selected');
+    if (selectedSeats.length > 0) {
+        if (confirm('Do you confirm this purchase?')) {
+            const selectedSeats = document.querySelectorAll('.row .selected');
+            selectedSeats.forEach(seat => seat.className = 'seat occupied');
+            updateSelectedCountAndTotal();
+        } else {
+            return;
+        }
+    } else {
+        alert('You have not selected any seats');
+    }
+
+
 });
 
 // Initial count and total

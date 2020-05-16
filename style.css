@@ -103,3 +103,20 @@ p.text {
 p.text span {
   color: #6feaf6;
 }
+.booking-btn {
+  padding: 10px;
+  width: 60px;
+  margin: 10px;
+  background-color: #6feaf6;
+  border-radius: 5px;
+  border: none;
+  color: #242333;
+  font-weight: 600;
+}
+.booking-btn:focus {
+  outline: 0;
+}
+.booking-btn:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
