@@ -25,7 +25,7 @@ const updateSelectedCountAndTotal = () => {
     //Occupied Seats
     const occupiedSeats = document.querySelectorAll('.row .seat.occupied');
     const occupiedSeatsIndex = [...occupiedSeats].map(seat => [...allSeats].indexOf(seat));
-    localStorage.setItem('ocuppiedSeats', JSON.stringify(occupiedSeatsIndex));
+    localStorage.setItem('occupiedSeats', JSON.stringify(occupiedSeatsIndex));
 
     const selectedSeatsCount = selectedSeats.length;
 
@@ -35,7 +35,7 @@ const updateSelectedCountAndTotal = () => {
 
 function populateUI() {
     const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
-    const occupiedSeats = JSON.parse(localStorage.getItem('ocuppiedSeats'));
+    const occupiedSeats = JSON.parse(localStorage.getItem('occupiedSeats'));
 
     if (selectedSeats) {
         seats.forEach((seat, index) => {
@@ -77,15 +77,14 @@ container.addEventListener('click', e => {
 bookingBtn.addEventListener('click', () => {
     const selectedSeats = document.querySelectorAll('.row .seat.selected');
     if (selectedSeats.length > 0) {
-        if (confirm('Do you confirm this purchase?')) {
-            const selectedSeats = document.querySelectorAll('.row .selected');
+        if (confirm(`Do you confirm the purchase of ${count.innerText} seat(s) with a total of $${total.innerText} to see ${movieSelect.options[movieSelect.selectedIndex].text}?`)) {
             selectedSeats.forEach(seat => seat.className = 'seat occupied');
             updateSelectedCountAndTotal();
         } else {
             return;
         }
     } else {
-        alert('You have not selected any seats');
+        alert('You have not selected any seats yet');
     }
 
 
