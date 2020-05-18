@@ -120,3 +120,8 @@ p.text span {
   cursor: pointer;
   transform: scale(1.1);
 }
+
+/* for first load and refresing */
+.lionking-room {
+  display: none;
+}

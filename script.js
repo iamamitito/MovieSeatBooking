@@ -4,16 +4,19 @@ const seats = document.querySelectorAll('.row .seat:not(.occupied)');
 const count = document.getElementById('count');
 const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
+
 const bookingBtn = document.querySelector('.booking-btn');
+const lionKingRoom = document.querySelector('.lionking-room');
+const toyStoryRoom = document.querySelector('.toystory-room');
+
 
 populateUI();
 
 let ticketPrice = +movieSelect.value;
 
 // Functions
-const setMovieData = (movieIndex, moviePrice) => {
+const setMovieData = (movieIndex) => {
     localStorage.setItem('selectedMovieIndex', movieIndex);
-    localStorage.setItem('selectedMoviePrice', moviePrice);
 }
 
 const updateSelectedCountAndTotal = () => {
@@ -61,10 +64,20 @@ function populateUI() {
 }
 
 // Event Listeners 
-movieSelect.addEventListener('change', e => {
+movieSelect.addEventListener('change', function (e) {
+    if (this.value == 12) {
+        lionKingRoom.style.display = 'block';
+        toyStoryRoom.style.display = 'none';
+        updateSelectedCountAndTotal();
+
+    } else if (this.value == 8) {
+        lionKingRoom.style.display = 'none';
+        toyStoryRoom.style.display = 'block';
+        updateSelectedCountAndTotal();
+    }
     ticketPrice = +e.target.value;
-    setMovieData(e.target.selectedIndex, e.target.value);
-    updateSelectedCountAndTotal();
+    setMovieData(e.target.selectedIndex);
+
 });
 
 container.addEventListener('click', e => {
@@ -73,6 +86,7 @@ container.addEventListener('click', e => {
         updateSelectedCountAndTotal();
     }
 });
+
 
 bookingBtn.addEventListener('click', () => {
     const selectedSeats = document.querySelectorAll('.row .seat.selected');
